@@ -1,0 +1,1 @@
+`scripts` contains all MATLAB and shell scripts used for small tasks tightly tied to the module. More general stuff should go into the `roborace/tools` repository (this is required if a tool/script becomes relevant to more than one module).
