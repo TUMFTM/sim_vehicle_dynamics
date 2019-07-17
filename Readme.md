@@ -56,7 +56,7 @@ Due to the requirement to manage multiple vehicle with the same code, we use Dat
 
 ### Start Simulation
 * Open the main project `simulation/sim_vehicle_dynamics/Sim_vehicle_dynamics.prj`
-* Open the model `simulation/sim_vehicle_dynamics/vehicledynamics/models/nonlineardtm.slx` or `.../nonlinearstm.slx` in Simulink and run it via the *Run* button to check if everything works correctly
+* Open the model `simulation/sim_vehicle_dynamics/vehicledynamics/models/nonlineardtm.slx` in Simulink and run it via the *Run* button to check if everything works correctly
 * To run a certain test maneuver, open one of the `.slx` models in `simulation/sim_vehicle_dynamics/vehicledynamics/test` in Simulink and run it via the *Run* button.
 
 ### Data Inspection
