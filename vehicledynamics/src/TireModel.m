@@ -1,4 +1,5 @@
 function [FxT_N, FyT_N] = TireModel(lambda_perc, alpha_rad, Fz_N, PacFrontLat, PacRearLat, PacFrontLong, PacRearLong)
+  % Pacjeka tire model based on a four coefficient approach
   % evaluates the lateral and longitudinal tire forces using the specified 
   % pacjeka models for front and rear 
   

@@ -1,5 +1,7 @@
 function [ExactMeasurements, DifferentialStates] = VehicleModel(DeltaWheel_rad, DriveForce_act_N, States, vp)
 
+% differential equations for the nonlinear single track model
+
 %% parameter mapping
 tw_front_m = vp.TrackWidthF_m; 
 tw_rear_m = vp.TrackWidthR_m; 
@@ -42,30 +44,24 @@ omega_rad = States(4:7);
 lambda_perc = States(8:11); 
 alpha_rad = States(12:15); 
 
-PowertrainTotalForce_N = DriveForce_act_N.DriveForce_act_N_FL + ...
-  DriveForce_act_N.DriveForce_act_N_FR + ...
-  DriveForce_act_N.DriveForce_act_N_RL + ...
-  DriveForce_act_N.DriveForce_act_N_RR; 
+PowertrainTotalForce_N = sum(DriveForce_act_N); 
 % handle negative force requests for low velocities (brake in standstill) 
 if(PowertrainTotalForce_N < 0 && vx_mps < vx_min) 
   % limit the powertrain forces for slow velocities 
-  DriveForce_act_N.DriveForce_act_N_FL = max(DriveForce_act_N.DriveForce_act_N_FL, PowertrainLimitLowVelocities_N);
-  DriveForce_act_N.DriveForce_act_N_FR = max(DriveForce_act_N.DriveForce_act_N_FR, PowertrainLimitLowVelocities_N);
-  DriveForce_act_N.DriveForce_act_N_RL = max(DriveForce_act_N.DriveForce_act_N_RL, PowertrainLimitLowVelocities_N);
-  DriveForce_act_N.DriveForce_act_N_RR = max(DriveForce_act_N.DriveForce_act_N_RR, PowertrainLimitLowVelocities_N);
+  DriveForce_act_N(1) = max(DriveForce_act_N(1), PowertrainLimitLowVelocities_N);
+  DriveForce_act_N(2) = max(DriveForce_act_N(2), PowertrainLimitLowVelocities_N);
+  DriveForce_act_N(3) = max(DriveForce_act_N(3), PowertrainLimitLowVelocities_N);
+  DriveForce_act_N(4) = max(DriveForce_act_N(4), PowertrainLimitLowVelocities_N);
   % in case the powertrain forces are small or negative, no powertrain forces should be
   % given to the powertrain (this is necessary for proper standstill) 
   NegativeForceFactor = max(vx_mps/vx_min, 0);
-  DriveForce_act_N.DriveForce_act_N_FL = DriveForce_act_N.DriveForce_act_N_FL*NegativeForceFactor; 
-  DriveForce_act_N.DriveForce_act_N_FR = DriveForce_act_N.DriveForce_act_N_FR*NegativeForceFactor; 
-  DriveForce_act_N.DriveForce_act_N_RL = DriveForce_act_N.DriveForce_act_N_RL*NegativeForceFactor; 
-  DriveForce_act_N.DriveForce_act_N_RR = DriveForce_act_N.DriveForce_act_N_RR*NegativeForceFactor; 
+  DriveForce_act_N(1) = DriveForce_act_N(1)*NegativeForceFactor; 
+  DriveForce_act_N(2) = DriveForce_act_N(2)*NegativeForceFactor; 
+  DriveForce_act_N(3) = DriveForce_act_N(3)*NegativeForceFactor; 
+  DriveForce_act_N(4) = DriveForce_act_N(4)*NegativeForceFactor; 
 end
 % powertrain bias front rear
-FxPT_N = [DriveForce_act_N.DriveForce_act_N_FL;...
-          DriveForce_act_N.DriveForce_act_N_FR;... 
-          DriveForce_act_N.DriveForce_act_N_RL;...
-          DriveForce_act_N.DriveForce_act_N_RR;]; 
+FxPT_N = DriveForce_act_N; 
 % wheel inertia factor matrix 
 wheelInertia_factors = [tyreradius_front_m/WheelInertia_Front_kgm2;...
   tyreradius_front_m/WheelInertia_Front_kgm2;...

@@ -45,3 +45,14 @@ sccprj/
 !/models/interfaces/SimulationBusObjects.mat
 # ROS stuff
 *.bag
+RaceControl/\.idea/
+
+RaceControl/\.mypy_cache/
+
+RaceControl/__pycache__/
+
+RaceControl/venv/
+
+*.pyc
+
+scripts/ReadXBoxController/\.idea/

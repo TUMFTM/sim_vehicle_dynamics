@@ -1,7 +1,6 @@
 function [ lambdaF, lambdaR, alphaF, alphaR ] = TireSlips(DeltaSteer_rad, VehicleStates, tyreradius_front_m, tyreradius_rear_m, l_front_m, l_rear_m)
 
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+% calculation of longitudinal and lateral tire slips
 
 % minimum speed for slip calculations
 vx_min = 0.5; 

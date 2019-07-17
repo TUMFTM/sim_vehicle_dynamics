@@ -1,5 +1,7 @@
 function [ExactMeasurements, dxpos] = PositionModel(xveh, xpos)
 
+% differential equations for the position of the vehicle
+
 % initialize output
 ExactMeasurements = zeros(3, 1); 
 dxpos = zeros(3, 1); 
