@@ -1,13 +1,14 @@
 # Vehicle Dynamics Simulation Software of TUM Roborace Team
 ### Overview
-This Vehicle Dynamics Simulation Software has been developed and used for the Roborace Competition. It has been used to develop a Software Stack which achieved 220kph and 95% of the combined lateral and longitudinal acceleration potential of the DevBot. This allowed to drive within 2% of the laptime of an amateur human race driver. The overall research project is a joint effort of the Chair of Automotive Technology and the Chair of Automatic Control.
+The following repository covers the vehicle dynamics simulation of a real-world racecar and can be used extensively for testing an autonomous driving software stack before driving on a real track. There are three variants of different complexity available, please see `vehicledynamics/Readme.md` for details. As an input all the simulations take steering, powertrain and brake commands from a control part of the software stack. In addition the simulation delivers sensor signals which are available on the racecar and sent back to the various parts of the software stack (e.g. to the control and state estimation module).
 
-This software component covers the vehicle dynamics simulation of the real-world racecar and is used extensively for testing the software stack before driving on track. It takes the control module's outputs steering, powertrain and brake commands and delivers sensor signals which are available on the racecar and sent back to the various parts of the software stack (e.g. to the control and state estimation module).
-The main functional components are depicted in this architecture diagram:
+This simulation has been developed and used for the Roborace Competition. With this simulation we evaluated and tested and autonomous driving software stack which achieved 220kph and 95% of the combined lateral and longitudinal acceleration potential of an autonomous racecar. This allowed to drive within 2% of the laptime of an amateur human race driver. The overall research project is a joint effort of the Chair of Automotive Technology and the Chair of Automatic Control.
+
+The main functional components of the vehicle dynamics simulation are depicted in this architecture diagram:
 
 ![VD simulation overview](resources/overview_VDsimulation.png)
 
-A video of the performance at the Monteblanco track can be found [here](https://www.youtube.com/watch?v=-vqQBuTQhQw). Current updates on the project status and a list of related scientific publications are available [here](https://www.ftm.mw.tum.de/en/main-research/vehicle-dynamics-and-control-systems/roborace-autonomous-motorsport/). 
+A video of the performance at the Monteblanco track can be found [here](https://www.youtube.com/watch?v=-vqQBuTQhQw). Current updates on the project status and a list of related scientific publications are available [here](https://www.ftm.mw.tum.de/en/main-research/vehicle-dynamics-and-control-systems/roborace-autonomous-motorsport/).
 
 ### Disclaimer
 Autonomous Driving is a highly complex and dangerous task. In case you plan to use this software, it is by all means required that you assess the overall safety concept of your project as a whole. Do not purely rely on any mechanism provided in this software package. See the license for more details.
@@ -17,7 +18,7 @@ Autonomous Driving is a highly complex and dangerous task. In case you plan to u
 * [Leonhard Hermansdorfer](mailto:hermansdorfer@ftm.mw.tum.de) (double-track model, overall repository responsibility)
 * [Alexander Wischnewski](mailto:alexander.wischnewski@tum.de) (single-track model)
 
-##### Acknowledgements
+##### Acknowledgments
 Several students contributed to the success of the project during their Bachelor's, Master's or Project Thesis.
 * Dean Petrovski (Sensor modeling)
 * Walter Schindler (Implementation of the double-track model)
@@ -56,15 +57,22 @@ Due to the requirement to manage multiple vehicle with the same code, we use Dat
 
 ### Start Simulation
 * Open the main project `simulation/sim_vehicle_dynamics/Sim_vehicle_dynamics.prj`
-* Open the model `simulation/sim_vehicle_dynamics/vehicledynamics/models/nonlineardtm.slx` in Simulink and run it via the *Run* button to check if everything works correctly
-* To run a certain test maneuver, open one of the `.slx` models in `simulation/sim_vehicle_dynamics/vehicledynamics/test` in Simulink and run it via the *Run* button.
+* Open the model `simulation/sim_vehicle_dynamics/vehicledynamics/test/check_ndtm/check_ndtm.slx` or `...test/check_nstm/check_nstm.slx` in Simulink and run it via the Run button to check if everything works correctly
+* To run a certain test maneuver, open one of the `.slx` models in `simulation/sim_vehicle_dynamics/vehicledynamics/test` in Simulink and run it via the Run button.
+* If you want to create your own maneuver, copy and paste one of the test .slx files in the same folder. Modify the model inputs to implement the desired vehicle maneuver.
+
+### Integration into your own simulation toolchain
+To integrate the vehicle dynamics models into your own simulation toolchain, create a referenced submodel containing either the single-track or double-track model.
+Provide the correct model inputs and adjust the model configuration to your own simulation.
 
 ### Data Inspection
 
 ##### Copy Simulation Output to Workspace
-All provided testcases contain a _To Workspace_ simulink block, which writes the simulation output into the Matlab workspace once the simulation has finished.
-Within this Matlab _structs_ named `SimRealState` and `SimInformation` you find the bus signals descirbed in the Readme within the folder `simulation/sim_vehicle_dynamics/vehicledynamics/`.
+All provided testcases contain a _To Workspace_ Simulink block, which writes the simulation output into the Matlab workspace once the simulation has finished.
+Within this Matlab _structs_ named `SimRealState` and `SimInformation`(these files will have the same name the _To Workspace_ blocks have) you find the bus signals described in the ReadMe within the folder `simulation/sim_vehicle_dynamics/vehicledynamics/`.
 This signals can be visualized by using the standard plot tools provided by Matlab.
+
+In order to get a quick overview of the vehicle behavior, there is a simple script in `.../scripts/` called `plot_VehicleMovement.m`. If the Matlab struct called `SimRealState` has been written to your workspace, you can run the visualization script and examine the vehicle behavior.
 
 To save the simulation output, right-click on one of the _struct_ elements in the Workspace and Choose `Save as...`.
 
@@ -72,7 +80,8 @@ To save the simulation output, right-click on one of the _struct_ elements in th
 To visualize and assess the simulation data Mathworks provides different tools, e.g. scopes or the *Data Inspector*.
 For further information consult the Matlab Documentation *View and Analyze Simulation Results*.
 
-If you choose `Enable data logging` on a simulink signal, it will also be written to the Workspace as a _struct_ element and named `logsout`.
+If you choose `Enable data logging` on a "Simulink signal line", it will also be written to the Workspace as a _struct_ element and named `logsout`.
+
 
 # Adapt the Vehicle Dynamics Simulation to your vehicle
 In the following, you find a guide how to modify the example vehicle such that it corresponds to your own vehicle.
@@ -80,12 +89,28 @@ In the following, you find a guide how to modify the example vehicle such that i
 In general, it is recommended to modify the example vehicle parameters. The only case where it is necessary to add a new vehicle is if you have to maintain multiple vehicle configurations or want to contribute to the upstream development. Please have in mind, that every vehicle has a two character identifier, which is used extensively throughout the project. In the case of this example vehicle it is `pa`. You will find this in front of many file names in this tutorials. All of these files are vehicle specific and may be subject to reconfiguration in a multiple vehicle setup.
 
 ### Integration into your own simulation toolchain
-To integrate the vehicle dynamics models into your own simulation toolchain, create a referenced submodel containing either the single-track or double-track model. 
+To integrate the vehicle dynamics models into your own simulation toolchain, create a referenced submodel containing either the single-track or double-track model.
 Provide the correct model inputs and adjust the model configuration to your own simulation. In addition, adjust the vehicle parameters, as described below, to match your target vehicle.
 
 ### Adjust the vehicle parameters
 To adapt the software to your vehicle, the vehicle parameters have to be adjusted for simulation.
 The simulation's vehicle parameters are located in `simulation/sim_vehicle_dynamics/parameters/*.sldd`. A description of the parameters can be found in the related documentation.
 
-##### Model Configuration:
+##### Model Configuration
 Simulink requires to specify the Target Hardware in the modelconfig. The project uses a quite complex structure to maintain these modelconfigs. This emerged from the need to support multiple targets with the same code and very different configs. The configs are located in `simulation/sim_vehicle_dynamics/interfaces/datadict/modelconfig.sldd`. The standard config used for the passenger vehicle repository is called `GRT`. Adjust the configuration according to your needs, e.g. Target Hardware and save everything. It is required to reload the project to apply the changes to all models.
+
+#### Adjust solver settings
+The standard solver setting within the Simulink model is a ode2 solver. For some reasons, it could be necessary to change the settings to a higher order solver (e.g. ode5). When your Simulink model is open, click on `Model Configuration Parameters` (pictogram is a cogwheel).
+Then click on `Open referenced configuration...` which is located next to the name of the referenced configuration at the top of the window. The appearing window looks the same as the one before but now allows you to adjust the settings. Go to `Solver` and change the solver settings in the second line to the desired solver.
+
+
+# Important Notes and Model Restrictions
+There are some aspects which have to be kept in mind when using the simulation model.
+
+## Notes
+- the standard setting for the solver is a ode2 solver. In some cases, this solver leads to unrealistic vehicle behavior or causes the model to crash. If you encounter this problem, it could be sufficient to change the solver settings (e.g to ode4 or ode5).
+- when using the ode2 solver, the model equations sometimes don't converge properly or even lead to unrealistic signal output (e.g. vehicle has come to standstill but x-acceleration is slightly positive). As described above, change settings to a higher order solver. 
+- especially when approaching the handling limits of the car, a higher solver is recommended. Keep in mind that especially open-loop maneuvers will cause the vehicle to become unstable quite often.
+
+## Model restrictions
+- the model does tend to oscillate when driving at very low speeds. This is caused by model equations and time constants within the model. The problem will occur when driving very slowly for a longer time. If you start from standstill to higher speeds, you might encounter some oscillations which disappear when the vehicle keeps accelerating.

@@ -1,7 +1,7 @@
 # Package overview
 The *vehicledynamics* folder contains all source code and models which is related to the vehicle dynamics simulation. This includes e.g. chassis models like the nonlinear single-track model and the nonlinear double-track model as well as tire models like the Pacejka model. Furthermore, some test cases are included to evaluate the vehicle dynamics models given a predefined input, the tire model in detail or to compare both model variants.
 
-The nonlinear single-track model considers the following effects:
+The nonlinear single-track model `nonlinearstm.slx` considers the following effects:
 
 * Position of the center of gravity and wheelbase
 * Steering wheel angle at the front axle
@@ -13,7 +13,7 @@ The nonlinear single-track model considers the following effects:
 * Position dynamics based on standard kinematic equations
 
 
-The nonlinear double-track model extends the single-track model in several aspects. The double-track model considers vehicle dynamics including vertical dynamics, roll and pitch, dynamic changes in wheel loads and degressive tire behaviour. The implemented vehicle dynamics model pays particular attention to the following points:
+The nonlinear double-track model extends the single-track model in several aspects. There are two implementations available: `VDBS_PassVeh14DOF.slx` utilizes the examples provided by the Vehicle Dynamics Blockset of Mathworks and only adjusts a few key parameters. In `nonlineardtm.slx` a customized version targeted at race-car vehicle dynamics is implemented. The double-track model in general considers vehicle dynamics including vertical dynamics, roll and pitch, dynamic changes in wheel loads and degressive tire behaviour. The implemented vehicle dynamics model pays particular attention to the following points:
 
 * Modeling of the vehicle behaviour with consideration of the vehicle vertical dynamics
 * Consideration of a three dimensional roadway profile with road longitudinal and lateral inclination
@@ -26,12 +26,14 @@ Contact person: [Leonhard Hermansdorfer ](mailto:leo.hermansdorfer@tum.de)
 
 ## datadict
 This folder contains the data dictionaries handed to the specific vehicle dynamics model. These data dictionaries aggregate several data dictionaries which are necessary for running the simulation (e.g. vehicle parameters and bus definitions). The parameters itself can be found in `simulation/sim_vehicle_dynamics/parameters`.
-* `nonlineardtm.sldd` aggregates all data dictionaries necessary to run the nonlinear double-track model
+* `nonlineardtm.sldd` aggregates all data dictionaries necessary to run the nonlinear double-track model (customized)
 * `nonlinearstm.sldd` aggregates all data dictionaries necessary to run the nonlinear single-track model
+* `VDBS_PassVeh14DOF.sldd` aggregates all data dictionaries necessary to run the nonlinear double-track model (Vehicle Dynamics Blockset Standard) 
 
 ## models
 * `nonlineardtm.slx` is the nonlinear double-track model implementation (all parameters and initial states are imported via the above mentioned data dictionary)
 * `nonlinearstm.slx` is the nonlinear single-track model implementation (only position states are handed via the above mentioned data dictionary; parameters are imported from `simulation/sim_vehicle_dynamics/parameters` folder directly)
+* `VDBS_PassVeh14DOF.slx` is the standard nonlinear double-track model implementation of the MathWorks [*Vehicle Dynamics Blockset*]
 
 The nonlinear double-track model was set up using the MathWorks [*Vehicle Dynamics Blockset*](https://de.mathworks.com/products/vehicle-dynamics/features.html#full-vehicle-simulation). Therefore, a detailed overview and explanation of the nonlinear double-track model can be found consulting the Documentation within Matlab.
 
@@ -40,7 +42,6 @@ This folder contains all scripts necessary to calculate the vehicle dynamics equ
 
 ## test
 This folder contains various Simulink models to test both vehicle dynamics models and to compare them.
-* `check_modelcompare` provides a set of different tests to compare the single-track and double-track model
 * `check_ndtm` provides a set of different tests to evaluate the nonlinear double-track model in detail 
 * `check_nstm` provides a test to evaluate the nonlinear single-track model
 * `check_tiredata` provides a set of different tests to evaluate the tire model only
@@ -86,6 +87,16 @@ Signals from _Vehicle Body_, _Suspension_, _Wheel, Tire and Brake_ and _Sensor_ 
 
 # Coordinate Systems
 Different coordinate conventions are used for the single-track and the double-track model.
+
+The global coordinate system used within the whole project is right-handed with the x-axis pointing to East, the y-axis pointing to North and therefore the z-axis pointing upwards.
+The heading angle of the vehicle is equal to zero when it is aligned to the positive y-axis (vehicle heads to North). If the vehicle is heading to South, the heading angle is pi and -pi, respectively. If the vehicle heads to West, the angle is positive and somewhere between 0 and pi. If the vehicle heads to East, the angle is negative and somewhere between 0 and -pi.
+
+Within the double-track model, a different coordinate system definition is used due to the preset definitions of the Mathworks Simulink model. The figure below shows how this particular coordinate system is defined in comparison to the project wide coordinate system.
+**Note that all signals, which are taken out of the double-track model and further used, are transformed to the project wide definition. If you use signals from inside the double-track model, you will have to transform them in most cases.**
+
+![different coordinate system definitions](resources/CoSy_different.PNG)
+
+
 
 ## Coordinate Systems of the single-track model
 The dynamic model of the vehicle is based on a single-track model with the corresponding coordinate system as depicted below.
