@@ -1,9 +1,17 @@
 %% plot movement of vehicle
 
 close all;
-clearvars -except SimRealState input debug
+clearvars -except SimRealState input debug logsout
 
 %% User Input
+
+%% data source
+
+   % 1: from simulation
+   % 2: from script which loads data for simulink replay
+   % 3: from debug file logged on vehicle; raw import with mat load 
+
+    i_datasource = 1;
 
 % visualization settings
     
@@ -17,7 +25,7 @@ clearvars -except SimRealState input debug
     t_start = 0;
 
     % set replay speed: if > 1, replay is faster than reality and vice versa
-    replay_speed_factor = 1;
+    replay_speed_factor = 2;
 
 
 % vehicle parameters
@@ -28,27 +36,43 @@ clearvars -except SimRealState input debug
     
 %% convert data from different sources 
 
-% from simulation
-    VehicleData = SimRealState;
+if i_datasource == 1
+    % from simulation
+    dummy = logsout{1}.Values;
+    VehicleData.x_m = dummy.x_m;
+    VehicleData.y_m = dummy.y_m;
+    VehicleData.psi_rad = dummy.psi_rad;
 
-% from script which loads data for simulink replay
-%     VehicleData = input{2};
-%     VehicleData.x_m = SimRealState.Pos.x_m;
-%     VehicleData.y_m = SimRealState.Pos.y_m;
-%     VehicleData.psi_rad = SimRealState.Pos.psi_rad;
+    VehicleData.vx_mps = dummy.vx_mps;
+    VehicleData.vy_mps = dummy.vy_mps;
 
-% from debug file logged on vehicle; raw import with mat load 
-%     VehicleData.x_m = debug.debug_mvdc_state_estimation_debug_StateEstimate_Pos_x_m;
-%     VehicleData.y_m = debug.debug_mvdc_state_estimation_debug_StateEstimate_Pos_y_m;
-%     VehicleData.psi_rad = debug.debug_mvdc_state_estimation_debug_StateEstimate_Pos_psi_rad;
-%     
-%     VehicleData.vx_mps = debug.debug_mvdc_state_estimation_debug_StateEstimate_vx_mps;
-% 	VehicleData.vy_mps = debug.debug_mvdc_state_estimation_debug_StateEstimate_vy_mps;
-% 
-%   	VehicleData.ax_mps2 = debug.debug_mvdc_state_estimation_debug_StateEstimate_ax_mps2;
-%     VehicleData.ay_mps2 = debug.debug_mvdc_state_estimation_debug_StateEstimate_ay_mps2;
+    VehicleData.ax_mps2 = dummy.ax_mps2;
+    VehicleData.ay_mps2 = dummy.ay_mps2;
 
-    
+elseif i_datasource == 2
+        
+    % from script which loads data for simulink replay
+    VehicleData = input{2};
+    VehicleData.x_m = SimRealState.Pos.x_m;
+    VehicleData.y_m = SimRealState.Pos.y_m;
+    VehicleData.psi_rad = SimRealState.Pos.psi_rad;
+
+elseif i_datasource == 2
+
+    % from debug file logged on vehicle; raw import with mat load 
+    VehicleData.x_m = debug.debug_mvdc_state_estimation_debug_StateEstimate_Pos_x_m;
+    VehicleData.y_m = debug.debug_mvdc_state_estimation_debug_StateEstimate_Pos_y_m;
+    VehicleData.psi_rad = debug.debug_mvdc_state_estimation_debug_StateEstimate_Pos_psi_rad;
+
+    VehicleData.vx_mps = debug.debug_mvdc_state_estimation_debug_StateEstimate_vx_mps;
+    VehicleData.vy_mps = debug.debug_mvdc_state_estimation_debug_StateEstimate_vy_mps;
+
+    VehicleData.ax_mps2 = debug.debug_mvdc_state_estimation_debug_StateEstimate_ax_mps2;
+    VehicleData.ay_mps2 = debug.debug_mvdc_state_estimation_debug_StateEstimate_ay_mps2;
+
+end
+
+
 %% get recorded data and transform for use in visualization
 
     time = VehicleData.x_m.Time((t_start/sim_timestep)+1:i:end);

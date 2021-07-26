@@ -1,0 +1,328 @@
+$ tire parameters for vehicle dynamics model with passenger vehicle configuration
+$
+$ tire parameters - front and rear
+$
+$ Five Parameter Pacejka Model (used in single-track model)
+[MFSIMPLE]
+PacLong_B = 4.7         $
+PacLong_C = 2.0         $
+PacLong_D = 2.0      $
+PacLong_E = 1.0         $
+PacLong_Fznom = 3000.0  $
+PacLong_eps_load = 0.0
+PacLat_B = 5.0          $
+PacLat_C = 2.35         $
+PacLat_D = 1.5         $
+PacLat_E = 1            $
+PacLat_Fznom = 3000     $
+PacLat_eps_load = 0.0
+r_tire_m = 0.42         $
+Iyy_Wheel_kgm2 = 2.0    $
+$
+$ Extended Pacejka Tire Model Parameters
+$----------------------------------------------------------------units
+[UNITS]
+LENGTH                   = 'meter'
+FORCE                    = 'newton'
+ANGLE                    = 'radians'
+MASS                     = 'kg'
+TIME                     = 'second'
+$----------------------------------------------------------------model
+[MODEL]
+PROPERTY_FILE_FORMAT     = 'MF-TYRE'
+TYPE                     = 'CAR'
+TYRESIDE                 = 'RIGHT'
+FITTYP                   = 52             	$Magic Formula Version number
+USE_MODE                 = 14            	$Tyre use switch (IUSED)
+VXLOW                    = 1                $Minimum speed
+LONGVL                   = 11            	$Measurement speed
+$-----------------------------------------------------------dimensions
+[DIMENSION]
+UNLOADED_RADIUS          = 0.42             $Free tyre radius
+WIDTH                    = 0.22         	$Nominal section width of the tyre
+ASPECT_RATIO             = 0.3           	$Nominal aspect ratio
+RIM_RADIUS               = 0.229        	$Nominal rim radius
+RIM_WIDTH                = 0.2667        	$Rim width
+$ added for matlab tire model
+$-------------------------------------------------------------inertial
+[INERTIAL]
+m_Wheel_kg            = 40               $Unsprung mass
+Iyy_Wheel_kgm2        = 2                $rotational inertial
+$ added for matlab tire model
+$----------------------------------------------------------------wheel
+[WHEEL]
+br_Nmsprad               = 0                $Rotational damping
+FNOMIN                   = 2500             $Nominal wheel load
+NORMPRES                 = 210000           $Nominal tire pressure
+TYRE_RADIUS_MOD          = 0.42	      	    $modified tyre radius which fits real vehicle data
+T_RelaxationLong         = 2                $long relaxation length factor (velocity dependent)
+T_RelaxationLat          = 3                $lat relaxation length factor (velocity dependent)
+T_RelaxationMy           = 100              $My relaxation length factor (velocity dependent)
+$------------------------------------------------------------parameter
+[VERTICAL]
+VERTICAL_STIFFNESS       = 240000        	$Tyre vertical stiffness
+VERTICAL_DAMPING         = 100           	$Tyre vertical damping  (estimated)
+BREFF                    = 3e-8		       	$Low load stiffness e.r.r.
+DREFF                    = 0      			$Peak value of e.r.r.
+FREFF                    = 0                $High load stiffness e.r.r.
+$ added for matlab tire model
+Q_RE0                    = 1                $Unloaded to nominal rolling radius ratio
+Q_V1                     = 0                $Radius rotational speed dependence
+Q_V2                     = 0                $Stiffness rotational speed dependence
+Q_FZ1                    = 25               $Linear load change with deflection
+Q_FZ2                    = 0                $Quadratic load change with deflection
+Q_FZ3                    = 0                $Linear load change with deflection and quadratic camber
+Q_FCX                    = 0                $Load response to longitudinal force
+Q_FCY                    = 0                $Load response to lateral force
+Q_FCY2                   = 0                $Vertical stiffness change due to lateral load dependency on lateral stiffness
+PFZ1                     = 0                $Stiffness response to pressure
+$------------------------------------------------------long_slip_range
+[LONG_SLIP_RANGE]
+KPUMIN                   = -1.5          	$Minimum valid wheel slip
+KPUMAX                   = 1.5           	$Maximum valid wheel slip
+$-----------------------------------------------------slip_angle_range
+[SLIP_ANGLE_RANGE]
+ALPMIN                   = -1.6       	$Minimum valid slip angle
+ALPMAX                   = 1.6        	$Maximum valid slip angle
+$-----------------------------------------------inclination_slip_range
+[INCLINATION_ANGLE_RANGE]
+CAMMIN                   = -0.32       	    $Minimum valid camber angle
+CAMMAX                   = 0.32        	    $Maximum valid camber angle
+$-------------------------------------------------vertical_force_range
+[VERTICAL_FORCE_RANGE]
+FZMIN                    = 1	         	$Minimum allowed wheel load
+FZMAX                    = 20000	       	$Maximum allowed wheel load
+$ added for matlab tire model
+$-------------------------------------------------tire_pressure_range
+[TIRE_PRESSURE_RANGE]
+PRESMIN                  = 10000            $Minimum allowed tire pressure
+PRESMAX                  = 1000000          $Maximum allowed tire pressure
+$--------------------------------------------------------------scaling
+[SCALING_COEFFICIENTS]
+LFZO                     = 1             	$Scale factor of nominal (rated) load
+LCX                      = 1             	$Scale factor of Fx shape factor
+LMUX                     = 0.97             $Scale factor of Fx peak friction coefficient
+LEX                      = 1             	$Scale factor of Fx curvature factor
+LKX                      = 1             	$Scale factor of Fx slip stiffness
+LHX                      = 1             	$Scale factor of Fx horizontal shift
+LVX                      = 1             	$Scale factor of Fx vertical shift
+LGAX                     = 1             	$Scale factor of camber for Fx
+LCY                      = 1             	$Scale factor of Fy shape factor
+LMUY                     = 0.97            	$Scale factor of Fy peak friction coefficient
+LEY                      = 1             	$Scale factor of Fy curvature factor
+LKY                      = 1             	$Scale factor of Fy cornering stiffness
+LHY                      = 1             	$Scale factor of Fy horizontal shift
+LVY                      = 1             	$Scale factor of Fy vertical shift
+LGAY                     = 1             	$Scale factor of camber for Fy
+LTR                      = 1             	$Scale factor of Peak of pneumatic trail
+LRES                     = 1             	$Scale factor for offset of residual torque
+LGAZ                     = 1             	$Scale factor of camber for Mz
+LXAL                     = 1             	$Scale factor of alpha influence on Fx
+LYKA                     = 1             	$Scale factor of alpha influence on Fx
+LVYKA                    = 1             	$Scale factor of kappa induced Fy
+LS                       = 1             	$Scale factor of Moment arm of Fx
+LSGKP                    = 1             	$Scale factor of Relaxation length of Fx
+LSGAL                    = 1             	$Scale factor of Relaxation length of Fy
+LGYR                     = 1             	$Scale factor of gyroscopic torque
+LMX                      = 1             	$Scale factor of overturning couple
+LVMX                     = 1             	$Scale factor of Mx vertical shift
+LMY                      = 1             	$Scale factor of rolling resistance torque
+$ added for Matlab tire MODEL
+LMUV                     = 0                $Scale factor for Slip speed Vs decaying friction
+LCZ                      = 1                $Scale factor for Radial tire stiffness
+LMPHI                    = 1                $Scale factor for Parking torque Mz
+$---------------------------------------------------------longitudinal
+[LONGITUDINAL_COEFFICIENTS]
+PCX1                     = 1.6        	    $Shape factor Cfx for longitudinal force
+PDX1                     = 1.5        	    $Longitudinal friction Mux at Fznom
+PDX2                     = -0.04       	    $Variation of friction Mux with load
+PDX3                     = 0.1           	$Variation of friction Mux with camber
+PEX1                     = 0.7      	    $Longitudinal curvature Efx at Fznom
+PEX2                     = -0.17       	    $Variation of curvature Efx with load
+PEX3                     = 0.023        	$Variation of curvature Efx with load squared
+PEX4                     = -0.14       	    $Factor in curvature Efx while driving
+PKX1                     = 30.7        	    $Longitudinal slip stiffness Kfx/Fz at Fznom
+PKX2                     = 0.27         	$Variation of slip stiffness Kfx/Fz with load
+PKX3                     = 0.13      	    $Exponent in slip stiffness Kfx/Fz with load
+PHX1                     = 0             	$Horizontal shift Shx at Fznom
+PHX2                     = 0             	$Variation of shift Shx with load
+PVX1                     = 0             	$Vertical shift Svx/Fz at Fznom
+PVX2                     = 0             	$Variation of shift Svx/Fz with load
+RBX1                     = 17.4       	    $Slope factor for combined slip Fx reduction
+RBX2                     = 12.9       	    $Variation of slope Fx reduction with kappa
+RCX1                     = 1.1      		$Shape factor for combined slip Fx reduction
+REX1                     = 0             	$Curvature factor of combined Fx
+REX2                     = 0             	$Curvature factor of combined Fx with load
+RHX1                     = 0.001    	    $Shift factor for combined slip Fx reduction
+PTX1                     = 0.75      	    $Relaxation length SigKap0/Fz at Fznom
+PTX2                     = 0.007       	    $Variation of SigKap0/Fz with load
+PTX3                     = -0.13            $Variation of SigKap0/Fz with exponent of load
+$ added for Matlab tire MODEL
+PPX1                     = 0                $Linear variation of longitudinal slip stiffness with tire pressure
+PPX2                     = 0                $Quadratic variation of longitudinal slip stiffness with tire pressure
+PPX3                     = 0                $Linear variation of peak longitudinal friction with tire pressure
+PPX4                     = 0                $Quadratic variation of peak longitudinal friction with tire pressure
+RBX3                     = 0                $Camber influence on combined slip longitudinal force
+$----------------------------------------------------------overturning
+[OVERTURNING_COEFFICIENTS]
+QSX1                     = -0.001   	    $Lateral force induced overturning moment
+QSX2                     = 2.1         	    $Camber induced overturning couple
+QSX3                     = -0.04     	    $Fy induced overturning couple
+QSX4                     = 0                $Mx, moment combined lateral force load and camber
+QSX5                     = 0                $Mx, load effect due to lateral force and camber
+QSX6                     = 0                $Mx, load effect due to B-factor
+QSX7                     = 0                $Mx, due to camber and load
+QSX8                     = 0                $Mx, due to lateral force and load
+QSX9                     = 0                $Mx, due to B-factor of lateral force and load
+QSX10                    = 0                $Mx, due to vertical force and camber
+QSX11                    = 0                $Mx, due to B-factor of vertical force and camber
+QSX12                    = 0                $Mx, due to squared camber
+QSX13                    = 0                $Mx, due to lateral force
+QSX14                    = 0                $Mx, due to lateral force with camber
+PPMX1                    = 0                $Mx, due to inflation pressure
+$--------------------------------------------------------------lateral
+[LATERAL_COEFFICIENTS]
+PCY1                     = 1.5        	    $Shape factor Cfy for lateral forces
+PDY1                     = 1.2     		    $Lateral friction Muy
+PDY2                     = -0.09   	        $Variation of friction Muy with load
+PDY3                     = 0.1		     	$Variation of friction Muy with squared camber
+PEY1                     = 0.1     	        $Lateral curvature Efy at Fznom
+PEY2                     = -1.2             $Variation of curvature Efy with load
+PEY3                     = 0.05             $Zero order camber dependency of curvature Efy
+PEY4                     = -8.1             $Variation of curvature Efy with camber
+PKY1                     = -75.5            $Maximum value of stiffness Kfy/Fznom
+PKY2                     = 4.65             $Load at which Kfy reaches maximum value
+PKY3                     = -0.6             $Variation of Kfy/Fznom with camber
+PHY1                     = 0.003            $Horizontal shift Shy at Fznom
+PHY2                     = -0.0006          $Variation of shift Shy with load
+PHY3                     = 0.004     	    $Variation of shift Shy with camber
+PVY1                     = 0.04		        $Vertical shift in Svy/Fz at Fznom
+PVY2                     = -0.02            $Variation of shift Svy/Fz with load
+PVY3                     = -0.97	    	$Variation of shift Svy/Fz with camber
+PVY4                     = -0.41            $Variation of shift Svy/Fz with camber and load
+RBY1                     = 20.6	            $Slope factor for combined Fy reduction
+RBY2                     = -23.5            $Variation of slope Fy reduction with alpha
+RBY3                     = 0.001            $Shift term for alpha in slope Fy reduction
+RCY1                     = 1.0              $Shape factor for combined Fy reduction
+REY1                     = 0             	$Curvature factor of combined Fy
+REY2                     = 0             	$Curvature factor of combined Fy with load
+RHY1                     = -0.02	        $Shift factor for combined Fy reduction
+RHY2                     = 0		    	$Shift factor for combined Fy reduction with load
+RVY1                     = 0.16             $Kappa induced side force Svyk/Muy*Fz at Fznom
+RVY2                     = 0.03             $Variation of Svyk/Muy*Fz with load
+RVY3                     = 27.5       	    $Variation of Svyk/Muy*Fz with camber
+RVY4                     = -29.7		   	$Variation of Svyk/Muy*Fz with alpha
+RVY5                     = 0.03             $Variation of Svyk/Muy*Fz with kappa
+RVY6                     = 0			   	$Variation of Svyk/Muy*Fz with atan(kappa)
+PTY1                     = 3.8	            $Peak value of relaxation length SigAlp0/R0
+PTY2                     = 4.7              $Value of Fz/Fznom where SigAlp0 is extreme
+$ added for Matlab tire MODEL
+PEY5                     = 0                $Lateral curvature variation with camber squared
+PKY4                     = 2                $Lateral force stiffness, KFy curvature
+PKY5                     = 0                $Variation of peak stiffness with squared camber
+PKY6                     = 0                $Lateral force, Fy, camber stiffness factor
+PKY7                     = 0                $Camber stiffness vertical load dependency
+PPY1                     = 0                $Cornering stiffness variation with inflation pressure
+PPY2                     = 0                $Cornering stiffness variation with inflation pressure induced nominal load dependency
+PPY3                     = 0                $Linear inflation pressure on peak lateral friction
+PPY4                     = 0                $Quadratic inflation pressure on peak lateral friction
+PPY5                     = 0                $Inflation pressure effect on camber stiffness
+RBY4                     = 0                $Lateral force, Fy, combined stiffness variation from camber
+$---------------------------------------------------rolling resistance
+[ROLLING_COEFFICIENTS]
+QSY1                     = 0.01		     	$Rolling resistance torque coefficient
+QSY2                     = 0     			$Rolling resistance torque depending on Fx
+QSY3                     = 0   				$Rolling resistance torque depending on speed
+QSY4                     = 0			  	$Rolling resistance torque depending on speed ^4
+$ added for Matlab tire MODEL
+QSY5                     = 0			  	$Torque resistance due to square of camber
+QSY6                     = 0			  	$Torque resistance due to square of camber and load
+QSY7                     = 1			  	$Torque resistance due to load
+QSY8                     = 1			  	$Torque resistance due to pressure
+$-------------------------------------------------------------aligning
+[ALIGNING_COEFFICIENTS]
+QBZ1                     = 9.0              $Trail slope factor for trail Bpt at Fznom
+QBZ2                     = 6.3	            $Variation of slope Bpt with load
+QBZ3                     = -0.5	            $Variation of slope Bpt with load squared
+QBZ4                     = -2.3             $Variation of slope Bpt with camber
+QBZ5                     = 2.7	            $Variation of slope Bpt with absolute camber
+QBZ9                     = -13.5        	$Slope factor Br of residual torque Mzr
+QBZ10                    = 0		       	$Slope factor Br of residual torque Mzr
+QCZ1                     = 1.1              $Shape factor Cpt for pneumatic trail
+QDZ1                     = 0.08             $Peak trail Dpt" = Dpt*(Fz/Fznom*R0)
+QDZ2                     = 0.004            $Variation of peak Dpt" with load
+QDZ3                     = -1.9             $Variation of peak Dpt" with camber
+QDZ4                     = -2.0             $Variation of peak Dpt" with camber squared
+QDZ6                     = -0.005           $Peak residual torque Dmr" = Dmr/(Fz*R0)
+QDZ7                     = 0.01		        $Variation of peak factor Dmr" with load
+QDZ8                     = -0.65            $Variation of peak factor Dmr" with camber
+QDZ9                     = -0.06            $Variation of peak factor Dmr" with camber and load
+QEZ1                     = -9.0             $Trail curvature Ept at Fznom
+QEZ2                     = 11.0	            $Variation of curvature Ept with load
+QEZ3                     = -5.9             $Variation of curvature Ept with load squared
+QEZ4                     = 0.24	            $Variation of curvature Ept with sign of Alpha-t
+QEZ5                     = -15.9            $Variation of Ept with camber and sign Alpha-t
+QHZ1                     = 0.007	        $Trail horizontal shift Sht at Fznom
+QHZ2                     = -0.001           $Variation of shift Sht with load
+QHZ3                     = -0.18            $Variation of shift Sht with camber
+QHZ4                     = 0.23             $Variation of shift Sht with camber and load
+SSZ1                     = -0.01	    	$Nominal value of s/R0: effect of Fx on Mz
+SSZ2                     = 0.05             $Variation of distance s/R0 with Fy/Fznom
+SSZ3                     = 2.40             $Variation of distance s/R0 with camber
+SSZ4                     = -1.0     		$Variation of distance s/R0 with load and camber
+QTZ1                     = 0	           	$Gyration torque constant
+MBELT                    = 0            	$Belt mass of the wheel
+$ added for Matlab tire MODEL
+QBZ6                    = 0            	    $Slope variation with square of camber
+QDZ10                   = 0                 $Peak residual torque, Dmr, variation with square of camber
+QDZ11                   = 0            	    $Peak residual torque, Dmr, variation with square of load
+PPZ1                    = 0            	    $Inflation pressure influence on trail length
+PPZ2                    = 0            	    $Inflation pressure influence on residual aligning torque
+$ TURNSLIP completely added for Matlab tire MODEL
+$-------------------------------------------------------------turn_slip
+[TURNSLIP]
+PDXP1                   = 0.4               $Longitudinal force, Fx, peak reduction due to spin
+PDXP2                   = 0            	    $Longitudinal force, Fx, peak reduction due to spin with varying load
+PDXP3                   = 0            	    $Longitudinal force, Fx, peak reduction due to spin with slip ratio
+PKYP1                   = 1            	    $Cornering stiffness reduction due to spin
+PDYP1                   = 0.4               $Lateral force, Fy, peak reduction due to spin
+PDYP2                   = 0            	    $Lateral force, Fy, peak reduction due to spin with varying load
+PDYP3                   = 0            	    $Lateral force, Fy, peak reduction due to spin with slip angle
+PDYP4                   = 0            	    $Lateral force, Fy, peak reduction due to square root of spin
+PHYP1                   = 1            	    $Lateral force, Fy, versus slip angle response lateral shift limit
+PHYP2                   = 0.15              $Lateral force, Fy, versus slip angle response max lateral shift limit
+PHYP3                   = 0            	    $Lateral force, Fy, versus slip angle response max lateral shift limit with load
+PHYP4                   = -4.0              $Lateral force, Fy, versus slip angle response lateral shift curvature factor
+PECP1                   = 0.5               $Camber stiffness reduction due to spin
+PECP2                   = 0            	    $Camber stiffness reduction due to spin with load
+QDTP1                   = 10                $Turn slip pneumatic trail reduction factor
+QCRP1                   = 0.2               $Turn moment for constant turning and zero longitudinal speed
+QCRP2                   = 0.1               $Turn slip moment increase with spin at 90-degree slip angle
+QBRP1                   = 0.1               $Residual spin torque reduction from side slip
+QDRP1                   = 1            	    $Turn slip moment peak magnitude
+QDRP2                   = 0            	    $Turn slip moment curvature
+$ CONTACTPATCH completely added for Matlab tire MODEL
+$-------------------------------------------------------------contactpatch
+[CONTACTPATCH]
+Q_RA1                   = 0            	    $Contact length square root term
+Q_RA2                   = 0            	    $Contact length linear term
+Q_RB1                   = 0            	    $Contact width root term
+Q_RB2                   = 0            	    $Contact width linear term
+$ STRUCTURAL completely added for Matlab tire MODEL
+$-------------------------------------------------------------structural
+[STRUCTURAL]
+LONGITUDINAL_STIFFNESS  = 450000            $Longitudinal stiffness
+LATERAL_STIFFNESS       = 120000            $Lateral stiffness
+PCFX1                   = 0            	    $Linear vertical deflection influence on longitudinal stiffness
+PCFX2                   = 0            	    $Quadratic vertical deflection influence on longitudinal stiffness
+PCFX3                   = 0            	    $Pressure dependency on longitudinal stiffness
+PCFY1                   = 0            	    $Linear vertical deflection influence on lateral stiffness
+PCFY2                   = 0            	    $Quadratic vertical deflection influence on lateral stiffness
+PCFY3                   = 0            	    $Pressure dependency on longitudinal stiffness
+$ GENERAL completely added for Matlab tire MODEL
+$-------------------------------------------------------------general
+[GENERAL]
+k1_TireFB_PT1           = 0.002             $
+k1_WheelsFB_PT1         = 0.002             $
+k2_TireFB_PT1           = 0.002             $
+p_Tires_Pa              = 220000            $tire pressure
