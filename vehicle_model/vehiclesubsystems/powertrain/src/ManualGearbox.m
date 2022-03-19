@@ -24,16 +24,16 @@ function [gear, shift_request] = ManualGearbox(gear_in, ...
 
 %% gear shift logic
 % init rpm limits
-radps_lb = i_gearset(3, gear_in+1) * ((2*pi)/60);
+radps_lb = i_gearset(3, gear_in) * ((2*pi)/60);
 
 % prevent gear jumping
 if shift_delay_s >= 0.05
     % upshift
-    if i_gearset(1, gear_in+1)<i_gearset(1, end) && gear_desired>gear_in
+    if i_gearset(1, gear_in)<i_gearset(1, end) && gear_desired>gear_in
        gear = gear_in + 1;
        shift_request = 1;
     % downshift
-    elseif w_engine_radps<=radps_lb && i_gearset(1, gear_in+1)>0 && gear_desired<gear_in
+    elseif w_engine_radps<=radps_lb && i_gearset(1, gear_in)>1 && gear_desired<gear_in
        gear = gear_in - 1;
        shift_request = 1;
     % stay in gear

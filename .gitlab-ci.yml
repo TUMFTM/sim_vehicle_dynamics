@@ -1,0 +1,47 @@
+stages:
+  - Generate
+  - Test
+  - Build
+
+GenerateCode:
+  stage: Generate
+  tags:
+    - Control-Simulink
+  script:
+    - C:\Program` Files\MATLAB\R2018b\bin\matlab.exe -wait -log -r "ProjectName = 'Sim_vehicle_dynamics.prj'; TestCase = 'CI/GenerateCode/testcases_GenerateCode.m';run('CI/TestManager.m')"
+  artifacts:
+    when: on_success
+    expire_in: 1 week
+    paths:
+      - build/nonlineardtm.zip
+      - build/nonlinearstm.zip
+      - build/PassengerVehicle.zip
+
+Drive:
+  stage: Test
+  tags:
+    - Control-Simulink
+  except:
+    - /^test-.*$/
+  script:
+    - C:\Program` Files\MATLAB\R2018b\bin\matlab.exe -wait -log -r "ProjectName = 'Sim_vehicle_dynamics.prj'; TestCase = 'CI/Drive/testcases_drive.m';run('CI/TestManager.m')"
+
+PythonBindingsUbuntu38:
+  stage: Build
+  before_script:
+    - cp build/PassengerVehicle.zip py_binds/tum_vehdyn/PassengerVehicle.zip
+    - cp build/nonlineardtm.zip py_binds/tum_vehdyn/DoubleTrackModel.zip
+    - cp build/nonlinearstm.zip py_binds/tum_vehdyn/SingleTrackModel.zip
+    - cd py_binds/tum_vehdyn
+    - unzip PassengerVehicle.zip -d PassengerVehicle
+    - unzip DoubleTrackModel.zip -d DoubleTrackModel
+    - unzip SingleTrackModel.zip -d SingleTrackModel
+    - cd ..
+    - python3.8 -m venv ./venv
+    - venv/bin/pip3 install -r requirements.txt
+  script:
+    - venv/bin/python3.8 setup.py bdist_wheel
+  artifacts:
+    when: always
+    paths:
+      - py_binds/dist/

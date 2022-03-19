@@ -1,0 +1,5 @@
+cython==0.29.16
+numpy==1.18.1
+setuptools
+wheel
+twine

@@ -1,5 +1,5 @@
 function [gear, shift_request] = AutomaticGearbox(drive_request, gear_in, ...
-                            w_engine_radps, n_ub_rpm, i_gearset, shift_delay_s)
+                            w_engine_radps, n_ub_rpm, i_gearset, shift_delay_s, clutch_engagement)
 %__________________________________________________________________________
 %% Documentation
 %
@@ -26,17 +26,17 @@ function [gear, shift_request] = AutomaticGearbox(drive_request, gear_in, ...
 
 %% gear shift logic
 % init rpm limits
-radps_lb = i_gearset(3, gear_in+1) * ((2*pi)/60);
-radps_ub = n_ub_rpm * ((2*pi)/60);
+radps_lb = i_gearset(3, gear_in) * ((2*pi)/60);
+radps_ub = n_ub_rpm(gear_in) * ((2*pi)/60);
 
 % prevent gear jumping
-if shift_delay_s >= 0.05
+if shift_delay_s >= 0.05 && clutch_engagement > 0.95
     % upshift
-    if w_engine_radps>=radps_ub && drive_request>0 && i_gearset(1, gear_in+1)<i_gearset(1, end)
+    if w_engine_radps>=radps_ub && drive_request>0 && i_gearset(1, gear_in)<i_gearset(1, end)
        gear = gear_in + 1;
        shift_request = 1;
     % downshift
-    elseif w_engine_radps<=radps_lb && drive_request<=0 && i_gearset(1, gear_in+1)>0
+    elseif w_engine_radps<=radps_lb && drive_request<=0 && i_gearset(1, gear_in)>1
        gear = gear_in - 1;
        shift_request = 1;
     % stay in gear

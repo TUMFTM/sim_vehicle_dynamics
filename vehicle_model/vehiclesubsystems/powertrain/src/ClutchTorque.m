@@ -40,13 +40,14 @@ D = -0.01;
 x = delta_rpm;
 sgn = (1/(exp(D*x)+1)) + ((-1)/(exp(-D*x)+1));
 if gear ~= 0
-   T_cap_Nm = sgn * T_max_cap_Nm;
+   T_cap_Nm = sgn * T_max_cap_Nm * clutch_act;
 else
    T_cap_Nm = 0;
 end
 
 % output clutch torque
-T_clutch_Nm = (clutch_act * T_cap_Nm) - wdot_transmission_radps2 * I_drivetrain_kgm2;
+%T_clutch_Nm = (clutch_act * T_cap_Nm) - wdot_transmission_radps2 * I_drivetrain_kgm2;
+T_clutch_Nm = T_cap_Nm - wdot_transmission_radps2 * I_drivetrain_kgm2;
 
 % torque loss
 T_loss_Nm = max(0, T_engine_Nm-T_clutch_Nm);

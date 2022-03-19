@@ -22,7 +22,7 @@ function T_transmission_Nm = TransmissionTorque(T_clutch_Nm, gear, i_gearset)
 
 %% calculate output torque
 %calculate reduction ratio
-i_g = i_gearset(2, gear+1)*i_gearset(4, gear+1);
+i_g = i_gearset(2, gear)*i_gearset(4, gear);
 
 if i_g ~= 0
     T_transmission_Nm = (i_g * T_clutch_Nm); 

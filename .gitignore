@@ -25,3 +25,5 @@ sccprj/
 *.pyc
 .vscode/
 venv/
+.idea
+.gitignore

@@ -1,4 +1,4 @@
-function [ExactMeasurements, DifferentialStates, debug] = VehicleModel(DeltaWheel_rad, DriveForce_act_N, extForces_N, extTorques_Nm, States, vp)
+function [ExactMeasurements, DifferentialStates] = VehicleModel(DeltaWheel_rad, DriveForce_act_N, extForces_N, extTorques_Nm, States, vp)
 
 % differential equations for the nonlinear single track model
 
@@ -143,9 +143,4 @@ ay = ay_km * w_km + ay_stm * w_stm;
 
 % write derivatives to output
 DifferentialStates = [dvx;dvy;ddPsi;domega_rad;dlambda_perc;dalpha_rad;]; 
-ExactMeasurements = [vx_mps;vy_mps;dPsi_rad;ax;ay;omega_rad;];
-buff1 = 0;
-buff1 = Fz_N(1);
-buff2 = 0;
-buff2 = Fz_N(3);
-debug = [w_km;w_stm;buff1;buff2;vx_mps;J;ax_stm;ax_km];
+ExactMeasurements = [vx_mps;vy_mps;dPsi_rad;ax;ay;omega_rad;]; 

@@ -32,7 +32,6 @@ Several students contributed to the success of the project during their Bachelor
 * Jens Wesker (C++ implementation of the vehicle dynamics models)
 
 ### List of software component in this repository
-* `cpp_implementation_EXPERIMENTAL`: Contains an experimental C++ implementation of the single-track model which can be integrated into Matlab and Python.
 * `helper_funcs_simvehdyn`: Contains some helper functions used in several other functions within this repository.
 * `interfaces`: Contains inter-package interface definitions.
 * `parameters`: Contains all vehicle specific parameters used for vehicle dynamics simulation.

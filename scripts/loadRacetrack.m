@@ -113,7 +113,7 @@ end
     Racetrack.psi_racetraj_rad = racetrack_data_out(:, 9);
 
     if bool_isavailable_banking
-        Racetrack.bankingangle_rad = racetrack_data_out(:,end);
+        Racetrack.bankingangle_rad = racetrack_data_out(:,13);
     else
         Racetrack.bankingangle_rad = zeros(size(racetrack_data_out, 1), 1);
     end

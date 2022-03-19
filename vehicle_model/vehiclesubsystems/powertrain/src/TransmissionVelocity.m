@@ -23,6 +23,6 @@ function w_transmission_radps = TransmissionVelocity(i_gearset, ...
 
 
 %% calculate angular velocity
-i_g = i_gearset(2, gear+1);
+i_g = i_gearset(2, gear);
 w_transmission_radps = w_diff_radps * i_g;
                             
